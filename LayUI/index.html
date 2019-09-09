@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SheetJS JS-XLSX In-Browser HTML Table Export Demo</title>
+	<style> 
+		table{border: 1px solid #ccc;width:30%;text-align: center;border-collapse: collapse;}
+		tableth,table td{border: 1px solid #ccc;padding: 10px;}
+	</style> 
+	<script type="text/javascript" src="layui/layui.js"></script>
+	<script type="text/javascript">
+		layui.config({
+			base: 'layui_exts/'
+		}).extend({
+			excel: 'excel'
+		});
+	</script>
+</head>
+
+<body>
+
+
+<pre style="font-size:25px;line-height:1">
+	layui 插件 导出 excel<br>
+	
+	详情看官网<a href="https://fly.layui.com/extend/excel/">https://fly.layui.com/extend/excel/</a><br>
+	优点：简单，快速
+		支持表格合并，复杂表头，样式，多sheet 页。
+	缺点: ie 9 及以下不支持。
+		针对数据对象进行导出，不能直接将table 元素直接导出。 
+		所以最好结合table 渲染框架使用，在方便渲染的同时支持导出数据对象。
+		参数复杂，需要自己组织数据的格式
+<pre/>
+
+
+
+      
+<p id="xlsxbtn" class="btn" onclick="exportDataTest(100);">
+	<input type="submit" value="Export">
+</p>
+<script type="text/javascript">
+(function ()  
+{   var ie = !!(window.attachEvent && !window.opera); 
+    var wk = /webkit//(/d+)/i.test(navigator.userAgent) && (RegExp.$1 < 525); 
+    var fn = [];  
+    var run = function () 
+                {  
+                    for (var i = 0; i < fn.length; i++) fn[i]();  
+                };  
+    var d = document;  
+    d.ready = function (f)  
+                {  
+                    if (!ie && !wk && d.addEventListener)  
+                    return d.addEventListener('DOMContentLoaded', f, false);  
+                    if (fn.push(f) > 1) return;  
+                    if (ie) (function ()  
+                                {  
+                                    try {  
+                                            d.documentElement.doScroll('left');  
+                                            run();  
+                                        }  
+                                    catch (err)  
+                                        {  
+                                            setTimeout(arguments.callee, 0);  
+                                        }  
+                                } 
+                            )();  
+                    else if (wk)   
+                    var t = setInterval(function ()  
+                                        {   
+                                            if (/^(loaded|complete)$/.test(d.readyState))  
+                                            clearInterval(t), run();   
+                                        }, 0);  
+                };  
+})();   
+
+document.ready(function (){
+layui.use('table', function(){
+  var table = layui.table;
+  
+  //第一个实例
+  table.render({
+    elem: '#demo'
+    ,height: 312
+    ,url: '/demo/table/user/' //数据接口
+    ,page: true //开启分页
+    ,cols: [[ //表头
+      {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+      ,{field: 'username', title: '用户名', width:80}
+      ,{field: 'sex', title: '性别', width:80, sort: true}
+      ,{field: 'city', title: '城市', width:80} 
+      ,{field: 'sign', title: '签名', width: 177}
+      ,{field: 'experience', title: '积分', width: 80, sort: true}
+      ,{field: 'score', title: '评分', width: 80, sort: true}
+      ,{field: 'classify', title: '职业', width: 80}
+      ,{field: 'wealth', title: '财富', width: 135, sort: true}
+    ]]
+  });
+  
+});
+function exportDataTest(total) {
+
+  layui.use(['excel'], function () {
+    var excel = layui.excel
+
+    // 如果数据量特别大，最好直接传入 AOA 数组，减少内存/CPU消耗
+    var data = [
+      ["ID", "用户名", '积分', '性别', '评分', '城市', '签名', '职业', '财富']
+    ]
+    if (total > 0) {
+      // 造 num 条数据
+      for (var i = 0; i < total; i++) {
+        data.push([
+          'LAY-' + i,
+          'test' + i,
+          '男',
+          200,
+          100,
+          '魔都',
+          'test' + i,
+          '程序猿',
+          100 * i,
+        ])
+      }
+    }
+
+    excel.exportExcel({
+      sheet1: data,
+	   sheet2: data
+    }, '测试导出' + total + '条数据.xlsx', 'xlsx')
+  })
+}
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SheetJS JS-XLSX In-Browser HTML Table Export Demo</title>
+</head>
+<style> 
+table{border: 1px solid #ccc;width:30%;text-align: center;border-collapse: collapse;}
+
+tableth,table td{border: 1px solid #ccc;padding: 10px;}
+
+</style> 
+<body>
+<script type="text/javascript" src="myExcelExport.js"></script>
+
+<p>
+	利用html转换 导出 excel<br>
+	没有使用其他控件
+<br>
+
+ie 10 及以上，其他浏览器：<br>
+ 
+由于文件真实格式是html,所以样式方面基本都会支持。<br>
+支持 导出&lt;caption>标题&lt;/caption><br>
+缺点：导出的文件用office 打开，会提示格式不对，每次需要确定打开<br>
+<br>
+
+ie 9 及以下：<br>
+使用 ActiveXObject, 导出是正宗的excel 文件。打开不会提示错误<br>
+缺点：需要ie8浏览器开启ActiveX控件支持，并且需要目标机器安装office 或wps <br>
+<br>
+总结：<br>
+这两种方式都是把html 转换成了excel,只是使用的原理不同 .第一种方式ie10 以上和其他流量器支持， ie 9 一下不支持，第二种方式 只有ie 支持，其他浏览器不支持，而且需要改浏览器设置，安装office 或wps。实际使用中还是不是很理想，比如要统一两种浏览器的导出样式，发现用两种导出的文件样式不一致，而且很难调
+<br>
+
+
+<br>
+
+</p>
+<table id="data-table" border="0" cellspacing="1" cellpadding="0">
+	<caption>标题</caption>
+    <tbody>
+    <tr style="background-color:red">
+        <td rowspan="2" ><span>第一</span></td>
+        <td colspan="2" ><span>第二</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td ><span>第三</span></td>
+        <td ><span>第四</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td colspan="2" id="sjs-A3"><span>11.00  $</span></td>
+        <td ><span>13</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td ><span>21</span></td>
+        <td ><span>22.00  $</span></td>
+        <td ><span>23</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td ><span></span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    </tbody>
+</table>
+      
+<p id="xlsxbtn" class="btn" onclick="doit('xlsx');">
+	<input type="submit" value="Export">
+</p>
+<script type="text/javascript">
+	function doit(type, fn, dl) {
+        var elt = document.getElementById('data-table');
+		exportExcel("data-table","表格");
+    }
+
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SheetJS JS-XLSX In-Browser HTML Table Export Demo</title>
+</head>
+<style> 
+table{border: 1px solid #ccc;width:30%;text-align: center;border-collapse: collapse;}
+
+tableth,table td{border: 1px solid #ccc;padding: 10px;}
+
+</style> 
+<body>
+<script type="text/javascript" src="xlsx.full.min.js"></script>
+
+<p>
+使用sheet js控件 导出 excel<br>
+不支持 ie 9 及以下<br>
+不支持 导出&lt;caption>标题&lt;/caption><br>
+不支持 背景色，
+不支持 border
+<br>
+支持 单元格合并<br>
+
+<br>
+导出excel 分为两步， 生成和导出。 生成是基本都是可以的，ie8不支持的是导出，即在页面动态生成并保存到桌面系统这个环节有问题。
+</p>
+<table id="data-table" border="0" cellspacing="1" cellpadding="0">
+	<caption>标题</caption>
+    <tbody>
+    <tr style="background-color:red">
+        <td rowspan="2" ><span>第一</span></td>
+        <td colspan="2" ><span>第二</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td ><span>第三</span></td>
+        <td ><span>第四</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td colspan="2" id="sjs-A3"><span>11.00  $</span></td>
+        <td ><span>13</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td ><span>21</span></td>
+        <td ><span>22.00  $</span></td>
+        <td ><span>23</span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    <tr>
+        <td ><span></span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+        <td ><span></span></td>
+    </tr>
+    </tbody>
+</table>
+      
+<p id="xlsxbtn" class="btn" onclick="doit('xlsx');">
+	<input type="submit" value="Export">
+</p>
+<script type="text/javascript">
+	function doit(type, fn, dl) {
+        var elt = document.getElementById('data-table');
+        var wb = XLSX.utils.table_to_book(elt, {sheet: "Sheet JS"});
+        return dl ?
+            XLSX.write(wb, {bookType: type, bookSST: true, type: 'base64'}) :
+            XLSX.writeFile(wb, fn || ('test.' + (type || 'xlsx')));
+    }
+
+</script>
+
+
+
+</body>
+</html>
